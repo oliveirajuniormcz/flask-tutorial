@@ -24,4 +24,12 @@ def create_app(test_config=None):
     def hello():
         return f'Hello World! - app.instance_path: {app.instance_path}'
 
+    from . import db
+    db.init_app(app)
+
+    from .blueprints import auth, blog
+    app.register_blueprint(auth.bp)
+    app.register_blueprint(blog.bp)
+    app.add_url_rule("/", endpoint='index')
+
     return app
